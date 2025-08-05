@@ -8,6 +8,17 @@ vi.mock("../MarkdownRenderer", () => ({
   MarkdownRenderer: ({ content }: { content: string }) => <div>{content}</div>,
 }));
 
+// Mock the ToolIndicator component
+vi.mock("../ToolIndicator", () => ({
+  ToolIndicator: ({ tool }: { tool: any }) => (
+    <div data-testid="tool-indicator">
+      {tool.toolName === "str_replace_editor" && tool.args?.command === "create" 
+        ? `Creating ${tool.args?.path?.split('/').pop() || 'file'}`
+        : tool.toolName}
+    </div>
+  ),
+}));
+
 afterEach(() => {
   cleanup();
 });
@@ -65,7 +76,7 @@ test("MessageList renders messages with parts", () => {
           type: "tool-invocation",
           toolInvocation: {
             toolCallId: "asdf",
-            args: {},
+            args: { command: "create", path: "Button.tsx" },
             toolName: "str_replace_editor",
             state: "result",
             result: "Success",
@@ -78,7 +89,7 @@ test("MessageList renders messages with parts", () => {
   render(<MessageList messages={messages} />);
 
   expect(screen.getByText("Creating your component...")).toBeDefined();
-  expect(screen.getByText("str_replace_editor")).toBeDefined();
+  expect(screen.getByText("Creating Button.tsx")).toBeDefined();
 });
 
 test("MessageList shows content for assistant message with content", () => {
