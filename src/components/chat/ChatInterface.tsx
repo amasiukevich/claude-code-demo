@@ -25,9 +25,7 @@ export function ChatInterface() {
   return (
     <div className="flex flex-col h-full p-4 overflow-hidden">
       <ScrollArea ref={scrollAreaRef} className="flex-1 overflow-hidden">
-        <div className="pr-4">
-          <MessageList messages={messages} isLoading={status === "streaming"} />
-        </div>
+        <MessageList messages={messages} isLoading={status === "streaming"} />
       </ScrollArea>
       <div className="mt-4 flex-shrink-0">
         <MessageInput
